@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="JoymonsCode.DotNetWatcher.View.SelectorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Path to executable" />
+        <TextBox x:Name="txtFileName" Grid.Column="1"
+                 Text="{Binding FilePath,UpdateSourceTrigger=PropertyChanged}" />
+        <Button Grid.Column="2" Content="Browse" Click="Clicked" />
+        <x:Code>
+            <![CDATA[
+void Clicked(object sender, RoutedEventArgs e)
+{
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.DefaultExt = ".exe";
+            ofd.Filter = "Executables (.exe)|*.exe"; // Filter files by extension
+
+            // Show open file dialog box
+            Nullable<bool> result = ofd.ShowDialog();
+            // Process open file dialog box results
+            if (result.HasValue && result.Value)
+            {
+                // Set value to textbox which will update the property of VM
+                txtFileName.Text= ofd.FileName;
+            }
+}
+]]>
+        </x:Code>
+        <Button Content="Start"
+                Grid.Column="3"
+                Command="{Binding StartCommand}" />
+    </Grid>
+</UserControl>
