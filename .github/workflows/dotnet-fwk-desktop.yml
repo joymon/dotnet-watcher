@@ -17,10 +17,10 @@ jobs:
       run: nuget restore DotNetWatcher.sln
  
     - name: Build and Publish Web App
-      run: msbuild DotNetWatcher.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+      run: msbuild DotNetWatcher.sln /p:Configuration=Release
  
     - name: Upload Artifact
       uses: actions/upload-artifact@v1.0.0
       with:
         name: published_webapp
-        path: ./DotNetWatcher/publish
+        path: ./DotNetWatcher/bin/Release
