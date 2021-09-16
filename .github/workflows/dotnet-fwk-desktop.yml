@@ -20,7 +20,7 @@ jobs:
         # Version files to bump version.
         # You can use Glob pattern string (like "**/*.csproj") or Glob patterns array json string (like "["**/*.csproj", "v1.version", "**/*.version.json", "!v2.version.json"]").
         # Patterns supported by Globby are supported.Leading ! changes the meaning of an include pattern to exclude.
-        version_file: "**/AssemblyInfo.cs"
+        version_files: "**/AssemblyInfo.cs"
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build and Publish Web App
       run: msbuild DotNetWatcher.sln /p:Configuration=Release
