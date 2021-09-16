@@ -28,6 +28,7 @@ jobs:
       run: |
         $env:newVersion=(Select-String -Path .\DotNetWatcher\Properties\AssemblyInfo.cs -Pattern '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' | select -first 1).Matches.Value
         $env:newVersion
+        echo "newVersion=$newVersion" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
     - name: Build and Publish Web App
       run: msbuild DotNetWatcher.sln /p:Configuration=Release
     - name: Upload Artifact
