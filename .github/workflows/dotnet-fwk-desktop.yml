@@ -15,21 +15,15 @@ jobs:
      
     - name: Restore NuGet Packages
       run: nuget restore DotNetWatcher.sln
-    
+    - uses: SiqiLu/dotnet-bump-version@master
+      with:
+        # Version files to bump version.
+        # You can use Glob pattern string (like "**/*.csproj") or Glob patterns array json string (like "["**/*.csproj", "v1.version", "**/*.version.json", "!v2.version.json"]").
+        # Patterns supported by Globby are supported.Leading ! changes the meaning of an include pattern to exclude.
+        version_file: "**/AssemblyInfo.cs"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build and Publish Web App
       run: msbuild DotNetWatcher.sln /p:Configuration=Release
-    - name: Semver run
-      id: semver
-      uses: lukaszraczylo/semver-generator@v1
-        # you can also use v1 tag which _should_ automatically upgrade to latest
-        # uses: lukaszraczylo/semver-generator@v1
-      with:
-        config_file: "**/AssemblyInfo.cs"
-        # either...
-        repository_local: true
-    - name: Semver check
-      run: |
-        echo "Semantic version detected: ${{ steps.semver.outputs.semantic_version }}"
     - name: Upload Artifact
       uses: actions/upload-artifact@v1.0.0
       with:
