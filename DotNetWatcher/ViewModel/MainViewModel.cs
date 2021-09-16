@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using JoymonsCode.DotNetWatcher.Core;
 
@@ -10,7 +11,10 @@ namespace JoymonsCode.DotNetWatcher.ViewModel
     {
         #region Properties
         private SelectorViewModel m;
-
+        public string Title
+        {
+             get { return $"Dot Net Watcher - v{Assembly.GetExecutingAssembly().GetName().Version}"; }
+        }
         public SelectorViewModel SelectorViewModel
         {
             get { return m; }

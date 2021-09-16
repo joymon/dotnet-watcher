@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:my="clr-namespace:JoymonsCode.DotNetWatcher.View"
         DataContext="{StaticResource mainVm}"
-        Title="Dot Net Watcher"
+        Title="{Binding Title}"
         Height="350"
         Width="525">
     <Grid>
