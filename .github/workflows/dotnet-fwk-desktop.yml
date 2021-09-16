@@ -15,13 +15,14 @@ jobs:
      
     - name: Restore NuGet Packages
       run: nuget restore DotNetWatcher.sln
-    - uses: SiqiLu/dotnet-bump-version@master
-      with:
-        # Version files to bump version.
-        # You can use Glob pattern string (like "**/*.csproj") or Glob patterns array json string (like "["**/*.csproj", "v1.version", "**/*.version.json", "!v2.version.json"]").
-        # Patterns supported by Globby are supported.Leading ! changes the meaning of an include pattern to exclude.
-        version_files: "**/AssemblyInfo.cs"
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Patch version number 
+      shell: powershell
+      run: |
+        (Get-Content -Path .\DotNetWatcher\Properties\AssemblyInfo.cs) -replace '\"([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)\"' , """`$1.`$2.`$3.$4""" `
+        | Set-Content -Path .\DotNetWatcher\Properties\AssemblyInfo.cs
+    - name: Set New Version to Environment
+      shell: powershell
+      run: (Select-String -Path .\DotNetWatcher\Properties\AssemblyInfo.cs -Pattern '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' | select -first 1).Matches.Value
     - name: Build and Publish Web App
       run: msbuild DotNetWatcher.sln /p:Configuration=Release
     - name: Upload Artifact
