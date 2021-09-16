@@ -15,10 +15,21 @@ jobs:
      
     - name: Restore NuGet Packages
       run: nuget restore DotNetWatcher.sln
- 
+    
     - name: Build and Publish Web App
       run: msbuild DotNetWatcher.sln /p:Configuration=Release
- 
+    - name: Semver run
+      id: semver
+      uses: lukaszraczylo/semver-generator@PLACE_LATEST_TAG_HERE
+        # you can also use v1 tag which _should_ automatically upgrade to latest
+        # uses: lukaszraczylo/semver-generator@v1
+      with:
+        config_file: "**/AssemblyInfo.cs"
+        # either...
+        repository_local: true
+    - name: Semver check
+      run: |
+        echo "Semantic version detected: ${{ steps.semver.outputs.semantic_version }}"
     - name: Upload Artifact
       uses: actions/upload-artifact@v1.0.0
       with:
